@@ -27,8 +27,35 @@
 * `Abs8()`
 * `Sqrt16()`
 
+Note: Functionality already well handled by the Go runtime has not be re-implemented.
+
+## Benchmarks
+
+Run on a Intel(R) Core(TM) i7-7600U CPU @ 2.80GHz.
+
+```bash
+BenchmarkStdLibFallbackSqrt-4   20000000                 50.7 ns/op
+BenchmarkStdLibDefaultSqrt-4    2000000000               0.30 ns/op
+BenchmarkSqrt16-4               200000000                9.12 ns/op
+BenchmarkStdLibRandom8-4        50000000                 25.6 ns/op
+BenchmarkRandom8-4              1000000000               2.12 ns/op
+BenchmarkStdLibSin8-4           50000000                 20.8 ns/op
+BenchmarkSin8-4                 300000000                4.07 ns/op
+BenchmarkStdLibSin16-4          50000000                 20.0 ns/op
+BenchmarkSin16-4                2000000000               0.94 ns/op
+```
+
+`Random8()`, `Sin8()` and `Sin16()` are significantly faster than using the
+equivalent Go Standard Library's Math package functions.
+
+`Sqrt16()` is compared against both the default compiled `math.Sqrt()` and a
+copy of the fallback Standard Library `sqrt()` function. The default version is
+optimized by the Go compiler into a single instruction on the AMD64
+architecture, so the fallback version is used for a fair comparison.
+
 ## TODO
 
+* Should `sin8()` be a lookup table instead?
 * Validate sin/cos function approximation errors.
 * Add assembly implementations from upstream, benchmark difference.
 
