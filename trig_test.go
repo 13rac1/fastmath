@@ -96,7 +96,7 @@ var fastLEDSin16 = [256]int16{
 func TestSin8(t *testing.T) {
 	for x := 0; x < 256; x++ {
 		if fastmath.Sin8(uint8(x)) != fastLEDSin8[x] {
-			t.Errorf("sin8(%d) expected: %d, found: %d", x, fastLEDSin8[x], fastmath.Sin8(uint8(x)))
+			t.Fatalf("sin8(%d) expected: %d, found: %d", x, fastLEDSin8[x], fastmath.Sin8(uint8(x)))
 		}
 	}
 }
@@ -104,7 +104,7 @@ func TestSin8(t *testing.T) {
 func TestSin16(t *testing.T) {
 	for x := 0; x < 65535; x += 256 {
 		if fastmath.Sin16(uint16(x)) != fastLEDSin16[x/256] {
-			t.Errorf("sin16(%d) expected: %d, found: %d", x, fastLEDSin16[x/256], fastmath.Sin16(uint16(x)))
+			t.Fatalf("sin16(%d) expected: %d, found: %d", x, fastLEDSin16[x/256], fastmath.Sin16(uint16(x)))
 		}
 	}
 }

@@ -18,6 +18,9 @@
 * `Scale8()` / `Scale8Video()`
 * `NScale8x3()` / `NScale8x3Video()`
 * `Scale16()` / `Scale16By8()`
+* `QAdd8()` / `QSub8()` / `QMul8()` - Saturating non-overflowing math functions.
+* `Abs8()`
+* `Sqrt16()`
 
 ## TODO
 
