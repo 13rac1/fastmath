@@ -4,7 +4,7 @@
 
 > "I can make things very fast if they don’t have to be correct." — Russ Cox
 
-* Designed for use with Tiny Go.
+* Designed for use with TinyGo or Web Assembly.
 * Based on FastLED's lib8tion
 
 ## Functions
@@ -15,10 +15,10 @@
 * `Random8Limit()` / `Random16Limit()`
 * `Random8Range()` / `Random16Range()`
 * `Random16SetSeed()` / `Random16GetSeed()` / `Random16AddEntropy()`
+* `Scale8()` / `Scale8Video()`
+* `NScale8x3()` / `NScale8x3Video()`
+* `Scale16()` / `Scale16By8()`
 
 ## TODO
 
-* `Scale8()` / `Scale8Video()`
-* `Nscale8x3()` / `Nscale8x3Video()`
-* `Scale16()`
-* `Gamma22()`
+* Add ARM Assembly implementations, benchmark difference.

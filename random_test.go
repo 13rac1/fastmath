@@ -8,7 +8,7 @@ import (
 )
 
 func TestRandom8(t *testing.T) {
-	t.Run("set seed", func(t *testing.T) {
+	t.Run("SetSeed", func(t *testing.T) {
 		fastmath.Random16SetSeed(0)
 
 		a := fastmath.Random8()
@@ -18,7 +18,7 @@ func TestRandom8(t *testing.T) {
 			t.Fatal("same seed random did not match")
 		}
 	})
-	t.Run("limit", func(t *testing.T) {
+	t.Run("Limit", func(t *testing.T) {
 		for lim := 1; lim < 256; lim++ {
 			for x := 0; x < 1000; x++ {
 				if fastmath.Random8Limit(uint8(lim)) > uint8(lim) {
@@ -27,7 +27,7 @@ func TestRandom8(t *testing.T) {
 			}
 		}
 	})
-	t.Run("range", func(t *testing.T) {
+	t.Run("Range", func(t *testing.T) {
 		for min := 1; min < 256; min++ {
 			for lim := min; lim < 256; lim++ {
 				for x := 0; x < 1000; x++ {
@@ -49,7 +49,7 @@ func TestRandom8(t *testing.T) {
 }
 
 func TestRandom16(t *testing.T) {
-	t.Run("seed", func(t *testing.T) {
+	t.Run("Seed", func(t *testing.T) {
 		fastmath.Random16SetSeed(0)
 		a := fastmath.Random16()
 		fastmath.Random16SetSeed(0)
@@ -58,7 +58,7 @@ func TestRandom16(t *testing.T) {
 			t.Fatal("same seed random did not match")
 		}
 	})
-	t.Run("limit", func(t *testing.T) {
+	t.Run("Limit", func(t *testing.T) {
 		for lim := 1; lim < 65535; lim++ {
 			for x := 0; x < 1000; x++ {
 				if fastmath.Random16Limit(uint16(lim)) > uint16(lim) {
@@ -67,7 +67,7 @@ func TestRandom16(t *testing.T) {
 			}
 		}
 	})
-	t.Run("range", func(t *testing.T) {
+	t.Run("Range", func(t *testing.T) {
 		for min := 1; min < 65535; min += 256 {
 			for lim := min; lim < 65535; lim += 256 {
 				for x := 0; x < 1000; x++ {
