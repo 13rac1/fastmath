@@ -1,8 +1,10 @@
-package fastmath
+package fastmath_test
 
 import (
 	"math"
 	"testing"
+
+	"github.com/13rac1/fastmath"
 )
 
 // Complete range of output from the FastLED sin8_C() function.
@@ -93,23 +95,23 @@ var fastLEDSin16 = [256]int16{
 
 func TestSin8(t *testing.T) {
 	for x := 0; x < 256; x++ {
-		if Sin8(uint8(x)) != fastLEDSin8[x] {
-			t.Errorf("sin8(%d) expected: %d, found: %d", x, fastLEDSin8[x], Sin8(uint8(x)))
+		if fastmath.Sin8(uint8(x)) != fastLEDSin8[x] {
+			t.Errorf("sin8(%d) expected: %d, found: %d", x, fastLEDSin8[x], fastmath.Sin8(uint8(x)))
 		}
 	}
 }
 
 func TestSin16(t *testing.T) {
 	for x := 0; x < 65535; x += 256 {
-		if Sin16(uint16(x)) != fastLEDSin16[x/256] {
-			t.Errorf("sin16(%d) expected: %d, found: %d", x, fastLEDSin16[x/256], Sin16(uint16(x)))
+		if fastmath.Sin16(uint16(x)) != fastLEDSin16[x/256] {
+			t.Errorf("sin16(%d) expected: %d, found: %d", x, fastLEDSin16[x/256], fastmath.Sin16(uint16(x)))
 		}
 	}
 }
 
 func BenchmarkStdLibSin8(b *testing.B) {
 	var r uint8
-	x := PI8
+	x := fastmath.PI8
 	for n := 0; n < b.N; n++ {
 		// Find the same 0-255 range as Sin8()
 		xInRadians := float64(x) / 255 * 2 * math.Pi
@@ -121,16 +123,16 @@ func BenchmarkStdLibSin8(b *testing.B) {
 
 func BenchmarkSin8(b *testing.B) {
 	var r uint8
-	x := PI8
+	x := fastmath.PI8
 	for n := 0; n < b.N; n++ {
-		r = Sin8(x)
+		r = fastmath.Sin8(x)
 	}
 	result8 = r
 }
 
 func BenchmarkStdLibSin16(b *testing.B) {
 	var r int16
-	x := PI16
+	x := fastmath.PI16
 	for n := 0; n < b.N; n++ {
 		// Find the same 0-255 range as Sin8()
 		xInRadians := float64(x) / 65535 * 2 * math.Pi
@@ -142,9 +144,9 @@ func BenchmarkStdLibSin16(b *testing.B) {
 
 func BenchmarkSin16(b *testing.B) {
 	var r int16
-	x := PI16
+	x := fastmath.PI16
 	for n := 0; n < b.N; n++ {
-		r = Sin16(x)
+		r = fastmath.Sin16(x)
 	}
 	result16 = r
 }
