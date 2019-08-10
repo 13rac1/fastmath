@@ -49,6 +49,7 @@ var fastLEDSin8 = [256]uint8{
 	104, 107, 110, 113, 116, 119, 122, 125,
 }
 
+// Range of output from the FastLED sin16_C() function.
 // for (int x = 0; x < 65535; x+=256) {
 //   printf("%d,", sin16(x));
 //   if (x%2048 == 1792) {
@@ -89,11 +90,6 @@ var fastLEDSin16 = [256]int16{
 	-12489, -11721, -10953, -10185, -9417, -8649, -7881, -7113,
 	-6223, -5439, -4655, -3871, -3087, -2303, -1519, -735,
 }
-
-// A global result variables to trick the compiler during benchmarks into not
-// optimizing the functions out.
-var result8 uint8
-var result16 int16
 
 func TestSin8(t *testing.T) {
 	for x := 0; x < 256; x++ {

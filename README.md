@@ -11,12 +11,14 @@
 
 * `Sin8()` / `Sin16()`
 * `Cos8()` / `Cos16()`
+* `Random8()` / `Random16()`
+* `Random8Limit()` / `Random16Limit()`
+* `Random8Range()` / `Random16Range()`
+* `Random16SetSeed()` / `Random16GetSeed()` / `Random16AddEntropy()`
 
 ## TODO
 
 * `Scale8()` / `Scale8Video()`
 * `Nscale8x3()` / `Nscale8x3Video()`
 * `Scale16()`
-* `Random8()` / `Random16()`
-* `Random16SetSeed()` / `Random16GetSeed()` / `Random16AddEntropy()`
 * `Gamma22()`
