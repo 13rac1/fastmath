@@ -55,9 +55,8 @@ architecture, so the fallback version is used for a fair comparison.
 
 ## TODO
 
-* Should `sin8()` be a lookup table instead?
-* Validate sin/cos function approximation errors.
-* Add assembly implementations from upstream, benchmark difference.
+* Should `Sin8()` be a lookup table? Why is it 4ns/op vs `Sin16()`@0.9ns/op?
+* Add ARM assembly implementations from upstream, benchmark difference.
 
 ## License
 

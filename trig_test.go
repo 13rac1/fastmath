@@ -8,7 +8,6 @@ import (
 )
 
 // Complete range of output from the FastLED sin8_C() function.
-// Reproduce:
 // int main() {
 // for (int x = 0; x < 256; x++) {
 //   printf("%d,", sin8(x));
@@ -96,27 +95,86 @@ var fastLEDSin16 = [256]int16{
 func TestSin8(t *testing.T) {
 	for x := 0; x < 256; x++ {
 		if fastmath.Sin8(uint8(x)) != fastLEDSin8[x] {
-			t.Fatalf("sin8(%d) expected: %d, found: %d", x, fastLEDSin8[x], fastmath.Sin8(uint8(x)))
+			t.Errorf("sin8(%d) expected: %d, found: %d", x, fastLEDSin8[x], fastmath.Sin8(uint8(x)))
 		}
+	}
+}
+
+func TestSin8Delta(t *testing.T) {
+	var totalDelta float64 = 0
+	var maxDelta float64 = 0
+	for x := 0; x <= 256; x++ {
+		sin8 := fastmath.Sin8(uint8(x))
+		xInRadians := float64(x) * 2 * math.Pi / 256
+		stdSin8 := (math.Sin(xInRadians) + 1) / 2 * 256
+		if sin8 == 0 || math.Round(stdSin8) == 0 {
+			// Avoid division with zero.
+			continue
+		}
+		delta := float64(sin8) - stdSin8
+		if delta > maxDelta {
+			maxDelta = delta
+		}
+		totalDelta += math.Abs(delta)
+
+		// t.Logf("sin8(%d): %d, sin float: %.02f, delta: %.02f", x, sin8, stdSin8, delta)
+	}
+	t.Logf("max delta: %.02f, average delta: %.02f", maxDelta, totalDelta/256)
+	averageError := totalDelta / 256 / 256 * 100
+	t.Logf("max error: %.02f%%, average error: %.02f%%", maxDelta/256*100, averageError)
+	if averageError > 0.8 {
+		// TODO: Can we lower this further?
+		t.Fatal("average error is too high")
 	}
 }
 
 func TestSin16(t *testing.T) {
 	for x := 0; x < 65535; x += 256 {
 		if fastmath.Sin16(uint16(x)) != fastLEDSin16[x/256] {
-			t.Fatalf("sin16(%d) expected: %d, found: %d", x, fastLEDSin16[x/256], fastmath.Sin16(uint16(x)))
+			t.Errorf("sin16(%d) expected: %d, found: %d", x, fastLEDSin16[x/256], fastmath.Sin16(uint16(x)))
 		}
 	}
+}
+
+func TestSin16Delta(t *testing.T) {
+	var totalDelta float64 = 0
+	var maxDelta float64 = 0
+	for x := 0; x <= 65535; x += 256 {
+		sin16 := fastmath.Sin16(uint16(x))
+		xInRadians := float64(x) * 2 * math.Pi / 65535
+		stdSin16 := math.Sin(xInRadians) / 2 * 65535
+		if sin16 == 0 || math.Round(stdSin16) == 0 {
+			// Avoid division with zero.
+			continue
+		}
+		delta := float64(sin16) - stdSin16
+		if math.Abs(delta) > maxDelta {
+			maxDelta = delta
+		}
+		totalDelta += math.Abs(delta)
+
+		// t.Logf("sin16(%d): %d, sin float: %.02f, delta: %.02f", x, sin16, stdSin16, delta)
+	}
+	t.Logf("max delta: %.02f, average delta: %.02f", maxDelta, totalDelta/256)
+	averageError := totalDelta / 256 / 65536 * 100
+	t.Logf("max error: %.02f%%, average error: %.02f%%", maxDelta/65536*100, averageError)
+	if averageError > 0.2 {
+		// TODO: Can we lower this further?
+		t.Fatal("average error is too high")
+	}
+}
+
+func stdLibSin8(theta uint8) uint8 {
+	// Find the same 0-255 range as Sin8()
+	xInRadians := float64(theta) / 255 * 2 * math.Pi
+	return uint8(math.Round((math.Sin(xInRadians) + 1) / 2 * 255))
 }
 
 func BenchmarkStdLibSin8(b *testing.B) {
 	var r uint8
 	x := fastmath.PI8
 	for n := 0; n < b.N; n++ {
-		// Find the same 0-255 range as Sin8()
-		xInRadians := float64(x) / 255 * 2 * math.Pi
-		sinX := uint8(math.Round((math.Sin(xInRadians) + 1) / 2 * 255))
-		r = sinX
+		r = stdLibSin8(x)
 	}
 	result8 = r
 }
@@ -130,14 +188,17 @@ func BenchmarkSin8(b *testing.B) {
 	result8 = r
 }
 
+func stdLibSin16(theta uint16) int16 {
+	// Find the same -32767 to 32767 range as Sin16()
+	xInRadians := float64(theta) / 65535 * 2 * math.Pi
+	return int16(math.Round((math.Sin(xInRadians)) / 2 * 65535))
+}
+
 func BenchmarkStdLibSin16(b *testing.B) {
 	var r int16
 	x := fastmath.PI16
 	for n := 0; n < b.N; n++ {
-		// Find the same 0-255 range as Sin8()
-		xInRadians := float64(x) / 65535 * 2 * math.Pi
-		sinX := int16(math.Round((math.Sin(xInRadians) + 1) / 2 * 255))
-		r = sinX
+		r = stdLibSin16(x)
 	}
 	result16 = r
 }

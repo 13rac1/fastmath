@@ -55,8 +55,6 @@ func Abs8(i int8) int8 {
 // On systems where Sqrt is a single instruction, the compiler
 // may turn a direct call into a direct use of that instruction instead.
 // src: https://golang.org/src/math/sqrt.go
-//
-// TODO: Benchmark on a physical microcontroller.
 func Sqrt16(x uint16) uint8 {
 	if x <= 1 {
 		return uint8(x)
