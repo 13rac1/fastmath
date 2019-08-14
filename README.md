@@ -2,7 +2,8 @@
 
 > "I can make things very fast if they don’t have to be correct." — Russ Cox
 
-8 and 16 bit math functions for when speed matters more than precision. Potential use cases include LED displays, 2D/3D graphics, and games.
+8 and 16 bit math functions for when speed matters more than precision.
+Potential use cases include LED displays, 2D/3D graphics, and games.
 
 * Designed for use with [TinyGo][tinygo] and/or [WebAssembly][go-wasm].
 * Based on the [FastLED][fastled] [lib8tion][lib8ation-src] library.
@@ -28,6 +29,16 @@
 * `Sqrt16()`
 
 Note: Functionality already well handled by the Go runtime has not be re-implemented.
+
+## Approximation Error
+
+Computer-based math functions have an error delta verses the pure mathematical
+results. The Golang Standard Library's math functions are precise up to 64 bit
+floats. The math functions provided by this library sacrifice additional
+precision for speed by working with small integers.
+
+* `Sin8()` - Max Error: 1.63%, Average Error: 0.78%
+* `Sin16()` - Max Error: 0.34%, Average Error: 0.19%
 
 ## Benchmarks
 
@@ -64,6 +75,10 @@ Licensed MIT
 
 © 2019 Brad Erickson
 
-Based on FastLED MIT-licensed code
+Based on FastLED MIT-licensed code:
 
 © 2013 FastLED
+
+Parts of test-only BSD code:
+
+© 2009 The Go Authors
